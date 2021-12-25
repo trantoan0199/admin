@@ -61,13 +61,9 @@ export default function Contact() {
     fetchData();
   }, []);
 
-  const handleDelete = (id) => {
-    const data = axios.delete(`${URL_API}/contacts/${id}`);
-    Contact.filter((elm) => data.id !== elm.id);
-    console.log(Contact, "hahaha");
-    setContact(Contact);
-    console.log(Contact, "hhuhuhu");
-
+  const handleDelete = async (id) => {
+    const { data } = await axios.delete(`${URL_API}/contacts/${id}`);
+    setContact(Contact.filter((elm) => Number(data.id) !== Number(elm.id)));
   };
 
   return (

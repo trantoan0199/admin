@@ -5,11 +5,13 @@ import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
-import { Link } from "react-router-dom";
+import { Link as LinkRouter } from "react-router-dom";
 import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import ContactMailIcon from '@material-ui/icons/ContactMail';
+import { Link } from '@material-ui/core'
+
 const menus1 = [
   {
     name: "Products",
@@ -55,7 +57,7 @@ export default function Menu() {
     <div>
       <List>
         {menus1.map((menu, index) => (
-          <Link to={menu.to} key={index}>
+          <Link to={menu.to} key={index} component={LinkRouter}>
             <ListItem button>
               <ListItemIcon>{menu.icon}</ListItemIcon>
               <ListItemText primary={menu.name} />
