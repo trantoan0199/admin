@@ -40,7 +40,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function List({ products, onDelete, onFillData }) {
+export default function List({ products, onDelete, onFillData, total, onChangePage }) {
 
     const classes = useStyles()
 
@@ -52,6 +52,19 @@ export default function List({ products, onDelete, onFillData }) {
     const handleToggleEdit = (values) => {
         onFillData && onFillData(values)
     }
+
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+        onChangePage && onChangePage(newPage, rowsPerPage)
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value));
+        onChangePage && onChangePage(page, parseInt(event.target.value))
+    };
 
     return (
         <div>
@@ -125,22 +138,13 @@ export default function List({ products, onDelete, onFillData }) {
                         ))}
                     </TableBody>
                     <TableFooter>
-                        {/* <TableRow>
-                            <TablePagination
-                                rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                                colSpan={3}
-                                count={products.length}
-                                rowsPerPage={rowsPerPage}
-                                page={page}
-                                SelectProps={{
-                                    inputProps: { "aria-label": "rows per page" },
-                                    native: true,
-                                }}
-                                onPageChange={handleChangePage}
-                                onRowsPerPageChange={handleChangeRowsPerPage}
-                            //   ActionsComponent={TablePaginationActions}
-                            />
-                        </TableRow> */}
+                        <TablePagination
+                            count={total}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPage={rowsPerPage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
                     </TableFooter>
                 </Table>
             </TableContainer>
