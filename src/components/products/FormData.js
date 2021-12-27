@@ -116,7 +116,7 @@ export default function FormData({ onSubmit, initialValues = defautValues, onClo
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
                         <TextField l
-                            abel="Giải Trí"
+                            label="Giải Trí"
                             {...inputProps}
                             value={state.giaiTri || ''}
                             onChange={({ target: { value } }) => handleChange('giaiTri', value)}

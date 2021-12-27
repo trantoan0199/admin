@@ -15,7 +15,11 @@ import {
   DialogContent,
   DialogTitle,
   DialogContentText,
+  Box,
+  Grid,
+  Typography,
 } from "@material-ui/core";
+import { HttpRequest } from "../../util/helper";
 
 const useStyles = makeStyles({
   table: {
@@ -25,21 +29,24 @@ const useStyles = makeStyles({
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
 
 export default function Order() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [orders, setOrders] = React.useState([]);
+
+  const fetchData = async () => {
+    const { data } = await HttpRequest.getList(`/orders`);
+    setOrders(data);
+    orders.map((order) => {
+      const { product } = HttpRequest.getList(`/products/${order.productId}`);
+      console.log(product);
+    });
+  };
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -63,15 +70,15 @@ export default function Order() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
+          {orders.map((row) => (
+            <TableRow key={row.id}>
               <TableCell component="th" scope="row">
                 <img alt={row.name} src="" width={50} height={40} />
               </TableCell>
-              <TableCell align="center">{row.calories}</TableCell>
-              <TableCell align="center">{row.fat}</TableCell>
-              <TableCell align="center">{row.carbs}</TableCell>
-              <TableCell align="center">{row.protein}</TableCell>
+              <TableCell align="center">{row.name}</TableCell>
+              <TableCell align="center">{row.cmnd}</TableCell>
+              <TableCell align="center">{row.email}</TableCell>
+              <TableCell align="center">{row.productId}</TableCell>
               <TableCell align="center">
                 <Button
                   variant="outlined"
@@ -85,29 +92,7 @@ export default function Order() {
           ))}
         </TableBody>
       </Table>
-      <Dialog
-        open={open}
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-slide-title"
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle id="alert-dialog-slide-title">
-          {"Thông Tin Của Khách Hàng Đã Mua Xe"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            Let Google help apps determine location. This means sending
-            anonymous location data to Google, even when no apps are running.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Đóng
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <Dialog open={open} TransitionComponent={Transition} onClose={handleClose} onClick={handleClose}/>
     </TableContainer>
   );
 }

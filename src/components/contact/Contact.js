@@ -62,8 +62,11 @@ export default function Contact() {
   }, []);
 
   const handleDelete = async (id) => {
-    const { data } = await axios.delete(`${URL_API}/contacts/${id}`);
-    setContact(Contact.filter((elm) => Number(data.id) !== Number(elm.id)));
+    var result = window.confirm("Bạn có chắc chắn muốn xóa không?");
+    if (result) {
+      const { data } = await axios.delete(`${URL_API}/contacts/${id}`);
+      setContact(Contact.filter((elm) => Number(data.id) !== Number(elm.id)));
+    }
   };
 
   return (
@@ -84,9 +87,7 @@ export default function Contact() {
                 {contact.name}
               </StyledTableCell>
               <StyledTableCell align="right">{contact.email}</StyledTableCell>
-              <StyledTableCell align="right">
-                {contact.description}
-              </StyledTableCell>
+              <StyledTableCell align="right">{contact.content}</StyledTableCell>
               <StyledTableCell align="center">
                 <Button
                   variant="contained"

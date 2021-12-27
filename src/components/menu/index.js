@@ -2,15 +2,16 @@ import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import { Link as LinkRouter } from "react-router-dom";
-import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
-import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import MenuBookIcon from '@material-ui/icons/MenuBook';
-import ContactMailIcon from '@material-ui/icons/ContactMail';
-import { Link } from '@material-ui/core'
+import DirectionsCarIcon from "@material-ui/icons/DirectionsCar";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import MenuBookIcon from "@material-ui/icons/MenuBook";
+import ContactMailIcon from "@material-ui/icons/ContactMail";
+import { Link } from "@material-ui/core";
+import SettingsIcon from "@material-ui/icons/Settings";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 const menus1 = [
   {
@@ -36,20 +37,13 @@ const menus1 = [
 ];
 const menus2 = [
   {
-    name: "Inbox",
-    icon: <InboxIcon />,
+    name: "Settings",
+    icon: <SettingsIcon />,
   },
   {
-    name: "Inbox",
-    icon: <InboxIcon />,
-  },
-  {
-    name: "Inbox",
-    icon: <InboxIcon />,
-  },
-  {
-    name: "Inbox",
-    icon: <InboxIcon />,
+    name: "Log Out",
+    icon: <ExitToAppIcon />,
+    to: '/admin'
   },
 ];
 export default function Menu() {

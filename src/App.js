@@ -19,7 +19,7 @@ import Menu from "./components/menu";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Products from "./components/products";
 import Order from "./components/order/Order";
-import News from "./components/news/News";
+import News from "./components/news";
 import Contact from "./components/contact/Contact";
 
 const drawerWidth = 240;

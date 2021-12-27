@@ -1,42 +1,41 @@
 import React from "react";
-import { Box, Button, Collapse } from "@material-ui/core";
+import { Button, Box, Collapse } from "@material-ui/core";
+import ListNews from "./ListNews";
 import { HttpRequest } from "../../util/helper";
-import FormData, { defautValues } from "./FormData";
-import List from "./List";
+import FormDataNews, { defaultValues } from "./FormDataNews";
 
-export default function Products({ search }) {
-  const [products, setProducts] = React.useState([]);
-  const [total, setTotal] = React.useState(0);
+export default function News() {
   const [isCollapse, setIsCollapse] = React.useState(false);
-
   const [initialValues, setInitialValues] = React.useState({});
+  const [total, setTotal] = React.useState(0);
+  const [news, setNews] = React.useState([]);
 
+  const handleCollapse = () => {
+    setIsCollapse(!isCollapse);
+    setInitialValues(defaultValues);
+  };
   const fetchData = async (page, limit) => {
     const { data } = await HttpRequest.getList(
-      `/products?page=${page}&limit=${limit}`
+      `/news?page=${page}&limit=${limit}`
     );
     setTotal(data.count);
-    setProducts(data.data);
+    setNews(data);
   };
-
   React.useEffect(() => {
     fetchData(1, 10);
   }, []);
 
-  const handleCollapse = () => {
-    setIsCollapse(!isCollapse);
-    setInitialValues(defautValues);
-  };
-
   const handleDelete = (id) => {
-    setProducts(products.filter((item) => Number(item.id) !== Number(id)));
+    if (window.confirm("Bạn có chắc chắn muốn xóa không?")) {
+      setNews(news.filter((item) => Number(item.id) !== Number(id)));
+    }
   };
 
   const handleSubmit = async (values) => {
     if (values.id) {
-      const { data } = await HttpRequest.update("/products", values.id, values);
-      setProducts(
-        products.map((item) => {
+      const { data } = await HttpRequest.update("/news", values.id, values);
+      setNews(
+        news.map((item) => {
           if (Number(item.id) === Number(values.id)) {
             return data;
           }
@@ -44,14 +43,13 @@ export default function Products({ search }) {
         })
       );
     } else {
-      const { data } = await HttpRequest.create("/products", values);
-      setProducts([...products, data]);
+      const { data } = await HttpRequest.create("/news", values);
+      setNews([...news, data]);
     }
   };
-
   const handleCloseForm = () => {
     setIsCollapse(false);
-    setInitialValues(defautValues);
+    setInitialValues(defaultValues);
   };
 
   const handleFillData = (values) => {
@@ -62,15 +60,10 @@ export default function Products({ search }) {
   const handleChangePage = (page, perPage) => {
     fetchData(page + 1, perPage);
   };
-
-  products = products.filter((product) => {
-    return product.name.toLowerCase().indexOf(search.toLowerCase() !== -1);
-  });
-
   return (
     <Box>
       <Collapse in={isCollapse} align="center">
-        <FormData
+        <FormDataNews
           onSubmit={handleSubmit}
           initialValues={initialValues}
           onClose={handleCloseForm}
@@ -78,14 +71,14 @@ export default function Products({ search }) {
       </Collapse>
       <Button
         variant="contained"
-        color="primary"
+        color="secondary"
         style={{ margin: 15 }}
         onClick={handleCollapse}
       >
-        {!isCollapse ? "Thêm Sản Phẩm" : "Đóng"}
+        {!isCollapse ? "Thêm Tin Tức" : "Đóng"}
       </Button>
-      <List
-        products={products}
+      <ListNews
+        news={news}
         onDelete={handleDelete}
         onFillData={handleFillData}
         total={total}
